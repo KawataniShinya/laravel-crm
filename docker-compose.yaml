@@ -10,6 +10,17 @@ services:
     networks:
       sample-network:
 
+  app-npm-run-dev:
+    image: node:20
+    container_name: app-npm-run-dev
+    volumes:
+      - ./app:/var/www/app
+    ports:
+      - "8080:80"
+    working_dir: /var/www/app
+    command:
+      bash -c "npm install && npm run dev"
+
   nginx-app:
     image: nginx:latest
     container_name: nginx-app
