@@ -15,11 +15,17 @@ services:
     container_name: app-npm-run-dev
     volumes:
       - ./app:/var/www/app
-    ports:
-      - "8080:80"
+    expose:
+      - "80"
+    environment:
+      VIRTUAL_HOST: localhost.app-node.sample.jp
     working_dir: /var/www/app
     command:
-      bash -c "npm install && npm run dev"
+      bash -c "npm install && npm run build && npm run docker"
+    networks:
+      sample-network:
+        aliases:
+          - localhost.app-node.sample.jp
 
   nginx-app:
     image: nginx:latest
@@ -49,7 +55,7 @@ services:
       MYSQL_USER: user
       MYSQL_PASSWORD: password
     ports:
-      - "127.0.0.1:3306:3306"
+      - "3306:3306"
     volumes:
       - ./docker/mysql/env/my.cnf:/etc/mysql/my.cnf
       - ./docker/mysql/data:/var/lib/mysql
