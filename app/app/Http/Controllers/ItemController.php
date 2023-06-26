@@ -6,17 +6,20 @@ use App\Http\Requests\StoreItemRequest;
 use App\Http\Requests\UpdateItemRequest;
 use App\Models\Item;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class ItemController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
-        return Inertia::render('Items/index');
+        return Inertia::render('Items/index', [
+            'items' => Item::select('id', 'name', 'price', 'is_selling')->get()
+        ]);
     }
 
     /**
