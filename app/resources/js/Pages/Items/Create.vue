@@ -1,20 +1,16 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head, router } from '@inertiajs/vue3';
-import { reactive } from 'vue';
+import { Head, useForm } from '@inertiajs/vue3';
+import InputError from '@/Components/InputError.vue';
 
-defineProps({
-    errors: Object
-})
-
-const form = reactive({
+const form = useForm({
     name: null,
     memo: null,
     price: null
 })
 
 const storeItem = () => {
-    router.post('/items', form)
+    form.post('/items', form)
 }
 </script>
 
@@ -32,6 +28,7 @@ const storeItem = () => {
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 text-gray-900">
+                        <InputError class="mt-2" v-for="(error, key) in form.errors" :key="key" :message="error" />
                         <section class="text-gray-600 body-font relative">
                             <form @submit.prevent="storeItem">
                                 <div class="container px-5 py-8 mx-auto">
