@@ -73,11 +73,16 @@ class ItemController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Item  $item
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function edit(Item $item)
     {
-        //
+        return Inertia::render(
+            'Items/Edit',
+            [
+                'item' => $item
+            ]
+        );
     }
 
     /**
