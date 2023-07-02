@@ -90,11 +90,21 @@ class ItemController extends Controller
      *
      * @param  \App\Http\Requests\UpdateItemRequest  $request
      * @param  \App\Models\Item  $item
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(UpdateItemRequest $request, Item $item)
     {
-        //
+        $item->name = $request->name;
+        $item->memo = $request->memo;
+        $item->price = $request->price;
+        $item->is_selling = $request->is_selling;
+        $item->save();
+
+        return to_route('items.index')
+            ->with([
+                'message' => '更新しました',
+                'status' => 'success',
+            ]);
     }
 
     /**

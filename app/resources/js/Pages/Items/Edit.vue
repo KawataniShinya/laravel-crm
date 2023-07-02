@@ -15,8 +15,8 @@ const form = useForm({
     is_selling: props.item.is_selling
 })
 
-const storeItem = () => {
-    form.post('/items', form)
+const updateItem = id => {
+    form.put(route('items.update', { item: id }), form)
 }
 </script>
 
@@ -36,7 +36,7 @@ const storeItem = () => {
                     <div class="p-6 text-gray-900">
                         <InputError class="mt-2" v-for="(error, key) in form.errors" :key="key" :message="error" />
                         <section class="text-gray-600 body-font relative">
-                            <form @submit.prevent="storeItem">
+                            <form @submit.prevent="updateItem(form.id)">
                                 <div class="container px-5 py-8 mx-auto">
                                     <div class="lg:w-1/2 md:w-2/3 mx-auto">
                                         <div class="flex flex-wrap -m-2">
@@ -63,12 +63,12 @@ const storeItem = () => {
                                                     <label for="is_selling" class="leading-7 text-sm text-gray-600 pr-4">ステータス</label>
                                                     <input type="radio" id="is_selling" name="is_selling" v-model="form.is_selling" value="1">
                                                     <label class="ml-2 mr-4">販売中</label>
-                                                    <input type="radio" id="is_selling" name="is_selling" v-model="form.is_selling" value="0">
+                                                    <input type="radio" name="is_selling" v-model="form.is_selling" value="0">
                                                     <label class="ml-2 mr-4">停止中</label>
                                                 </div>
                                             </div>
                                             <div class="p-2 w-full">
-                                                <button class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">商品登録</button>
+                                                <button class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">更新する</button>
                                             </div>
                                         </div>
                                     </div>
