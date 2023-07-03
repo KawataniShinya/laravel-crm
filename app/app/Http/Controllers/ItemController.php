@@ -111,10 +111,16 @@ class ItemController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Item  $item
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Item $item)
     {
-        //
+        $item->delete();
+
+        return to_route('items.index')
+            ->with([
+                'message' => '削除しました',
+                'status' => 'danger',
+            ]);
     }
 }
