@@ -5,17 +5,23 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCustomerRequest;
 use App\Http\Requests\UpdateCustomerRequest;
 use App\Models\Customer;
+use Inertia\Inertia;
 
 class CustomerController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Inertia\Response
      */
-    public function index()
+    public function index(): \Inertia\Response
     {
-        //
+        return Inertia::render(
+            'Customers/Index',
+            [
+                'customers' => Customer::select('id', 'name', 'kana', 'tel')->get()
+            ]
+        );
     }
 
     /**
