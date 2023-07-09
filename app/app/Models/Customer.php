@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Purchase;
 
 /**
  * App\Models\Customer
@@ -36,6 +37,9 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Customer wherePostcode($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Customer whereTel($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Customer whereUpdatedAt($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Purchase> $purchases
+ * @property-read int|null $purchases_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Customer searchCustomers($input = null)
  * @mixin \Eloquent
  */
 class Customer extends Model
@@ -65,5 +69,10 @@ class Customer extends Model
                 return $query->where('kana', 'like', $input . '%')->orWhere('tel', 'like', $input . '%');
             }
         }
+    }
+
+    public function purchases()
+    {
+        return $this->hasMany(Purchase::class);
     }
 }
