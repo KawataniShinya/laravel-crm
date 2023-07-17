@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorePurchaseRequest;
 use App\Http\Requests\UpdatePurchaseRequest;
 use App\Models\Purchase;
+use App\Models\Customer;
+use App\Models\Item;
+use Illuminate\Validation\Rules\In;
+use Inertia\Inertia;
 
 class PurchaseController extends Controller
 {
@@ -21,11 +25,20 @@ class PurchaseController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Inertia\Response
      */
     public function create()
     {
-        //
+        $customers = Customer::select('id', 'name', 'kana')->get();
+        $items = Item::select('id', 'name', 'price')->where('is_selling', true)->get();
+
+        return Inertia::render(
+            'Purchases/Create',
+            [
+                'customers' => $customers,
+                'Items' => $items
+            ]
+        );
     }
 
     /**
