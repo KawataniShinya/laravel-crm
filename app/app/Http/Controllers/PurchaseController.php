@@ -45,11 +45,23 @@ class PurchaseController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\StorePurchaseRequest  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(StorePurchaseRequest $request)
     {
-        dd($request);
+        $purchase = Purchase::create([
+            'customer_id' => $request->customer_id,
+            'status' => $request->status
+        ]);
+
+        foreach ($request->items as $item){
+            $purchase->items()->attach($purchase->id, [
+                'item_id' => $item['id'],
+                'quantity' => $item['quantity']
+            ]);
+        }
+
+        return to_route('dashboard');
     }
 
     /**
