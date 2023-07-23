@@ -36,7 +36,7 @@ class PurchaseController extends Controller
             'Purchases/Create',
             [
                 'customers' => $customers,
-                'Items' => $items
+                'items' => $items
             ]
         );
     }
