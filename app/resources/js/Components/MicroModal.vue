@@ -1,16 +1,26 @@
 <script setup>
 import axios from "axios";
-import { ref, onMounted } from 'vue'
+import {ref, onMounted, reactive} from 'vue'
 
-onMounted(() => {
-    axios.get('/api/user')
-        .then( res => {
-            console.log(res)
-        })
-})
+const search = ref('')
+const customers = reactive({})
 
 const isShow = ref(false)
 const toggleStatus = () => { isShow.value = !isShow.value }
+
+const searchCustomer = async () => {
+    try {
+        await axios.get(`/api/searchCustomers/?search=${search.value}`)
+            .then( res => {
+                console.log(res.data)
+                customers.value = res.data
+            })
+        toggleStatus()
+    } catch (e) {
+        console.log(e)
+    }
+}
+
 </script>
 <template>
     <div v-show="isShow" class="modal" id="modal-1" aria-hidden="true">
@@ -34,5 +44,6 @@ const toggleStatus = () => { isShow.value = !isShow.value }
             </div>
         </div>
     </div>
-    <button @click="toggleStatus" type="button" data-micromodal-trigger="modal-1" href='javascript:;'>Open Modal Dialog</button>
+    <input name="customer" v-model="search">
+    <button @click="searchCustomer" type="button" data-micromodal-trigger="modal-1">検索する</button>
 </template>
