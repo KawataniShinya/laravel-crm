@@ -5,11 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorePurchaseRequest;
 use App\Http\Requests\UpdatePurchaseRequest;
 use App\Models\Purchase;
-use App\Models\Customer;
 use App\Models\Item;
-use Illuminate\Validation\Rules\In;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\DB;
+use App\Models\Order;
 
 class PurchaseController extends Controller
 {
@@ -20,7 +19,7 @@ class PurchaseController extends Controller
      */
     public function index()
     {
-        //
+        dd(Order::paginate(50));
     }
 
     /**
