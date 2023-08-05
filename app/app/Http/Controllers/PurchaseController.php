@@ -15,11 +15,17 @@ class PurchaseController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Inertia\Response
      */
     public function index()
     {
-        dd(Order::paginate(50));
+        $orders = Order::groupBy('id')
+            ->selectRaw('id, sum(subtotal) as total, customer_name, status, created_at')
+            ->paginate(50);
+
+        return Inertia::render('Purchases/Index', [
+            'orders' => $orders
+        ]);
     }
 
     /**

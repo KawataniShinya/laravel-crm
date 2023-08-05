@@ -26,6 +26,8 @@ use App\Models\Item;
  * @method static \Illuminate\Database\Eloquent\Builder|Purchase whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Purchase whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Purchase whereUpdatedAt($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Item> $items
+ * @property-read int|null $items_count
  * @mixin \Eloquent
  */
 class Purchase extends Model

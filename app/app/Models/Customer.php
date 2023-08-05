@@ -40,6 +40,7 @@ use App\Models\Purchase;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Purchase> $purchases
  * @property-read int|null $purchases_count
  * @method static \Illuminate\Database\Eloquent\Builder|Customer searchCustomers($input = null)
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Purchase> $purchases
  * @mixin \Eloquent
  */
 class Customer extends Model
