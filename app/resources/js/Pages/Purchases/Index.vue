@@ -4,6 +4,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import FlashMessage from '@/Components/FlashMessage.vue';
 import Pagination from '@/Components/Pagination.vue'
+import dayjs from 'dayjs';
 
 const props = defineProps({
     orders: Object
@@ -51,7 +52,7 @@ onMounted(() => {
                                             <td class="px-4 py-3">{{ order.customer_name  }}</td>
                                             <td class="px-4 py-3">{{ order.total }}</td>
                                             <td class="px-4 py-3">{{ order.status }}</td>
-                                            <td class="px-4 py-3">{{ order.created_at }}</td>
+                                            <td class="px-4 py-3">{{ dayjs(order.created_at).format('YYYY-MM-DD HH:mm:ss') }}</td>
                                         </tr>
                                         </tbody>
                                     </table>
