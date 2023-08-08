@@ -48,7 +48,9 @@ onMounted(() => {
                                         </thead>
                                         <tbody>
                                         <tr v-for="order in props.orders.data" :key="order.id">
-                                            <td class="px-4 py-3">{{ order.id }}</td>
+                                            <td class="px-4 py-3">
+                                                <Link class="text-blue-400" :href="route('purchases.show', { purchase: order.id })">{{ order.id }}</Link>
+                                            </td>
                                             <td class="px-4 py-3">{{ order.customer_name  }}</td>
                                             <td class="px-4 py-3">{{ order.total }}</td>
                                             <td class="px-4 py-3">{{ order.status }}</td>

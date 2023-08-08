@@ -81,11 +81,21 @@ class PurchaseController extends Controller
      * Display the specified resource.
      *
      * @param  \App\Models\Purchase  $purchase
-     * @return \Illuminate\Http\Response
+     * @return \Inertia\Response
      */
     public function show(Purchase $purchase)
     {
-        //
+        $items = Order::where('id', $purchase->id)->get();
+
+        $order = Order::groupBy('id')
+            ->where('id', $purchase->id)
+            ->selectRaw('id, sum(subtotal) as total, customer_name, status, created_at')
+            ->get();
+
+        return Inertia::render('Purchases/Show', [
+            'items' => $items,
+            'order' => $order
+        ]);
     }
 
     /**
