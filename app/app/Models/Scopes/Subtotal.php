@@ -24,6 +24,7 @@ class Subtotal implements Scope
                 item_purchase.id as pivot_id,
                 items.price * item_purchase.quantity as subtotal,
                 customers.name as customer_name,
+                customers.id as customer_id,
                 items.name as item_name,
                 items.price as item_price,
                 item_purchase.quantity,

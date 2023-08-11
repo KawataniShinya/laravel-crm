@@ -102,7 +102,7 @@ class PurchaseController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Purchase  $purchase
-     * @return \Illuminate\Http\Response
+     * @return \Inertia\Response
      */
     public function edit(Purchase $purchase)
     {
@@ -127,7 +127,16 @@ class PurchaseController extends Controller
                 'quantity' => $quantity,
             ]);
         }
-        dd($items);
+
+        $order = Order::groupBy('id')
+            ->where('id', $purchase->id)
+            ->selectRaw('id, customer_id, customer_name, status, created_at')
+            ->get();
+
+        return Inertia::render('Purchases/Edit', [
+            'items' => $items,
+            'order' => $order
+        ]);
     }
 
     /**
