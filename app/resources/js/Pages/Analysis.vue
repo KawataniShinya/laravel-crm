@@ -28,6 +28,8 @@ const getData = async () => {
             }
         }).then( res => {
             data.data = res.data.data
+            data.labels = res.data.labels
+            data.totals = res.data.totals
             console.log(res.data)
         })
     } catch (e) {
@@ -55,7 +57,9 @@ const getData = async () => {
                             <button class="mt-4 flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">分析する</button>
                         </form>
 
-                        <Chart />
+                        <div v-if="data.data">
+                            <Chart :data="data" />
+                        </div>
 
                         <div v-show="data.data" class="lg:w-2/3 w-full mx-auto overflow-auto">
                             <table class="table-auto w-full text-left whitespace-no-wrap">
