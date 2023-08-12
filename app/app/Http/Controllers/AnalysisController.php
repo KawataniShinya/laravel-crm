@@ -88,9 +88,30 @@ class AnalysisController extends Controller
                     when ? <= row_num and row_num < ? then 9
                     when ? <= row_num and row_num < ? then 10
                 end as decile
-            ", $bindValues)->get();
+            ", $bindValues);
 
-        dd($subQuery);
+//        dd($subQuery);
+
+        $subQuery = DB::table($subQuery)
+            ->groupBy('decile')
+            ->selectRaw('
+                decile,
+                round(avg(total)) as average,
+                sum(total) as totalPerGroup
+            ');
+
+//        dd($subQuery);
+
+        DB::statement("set @total = ${total};");
+        $data = DB::table($subQuery)
+            ->selectRaw('
+                decile,
+                average,
+                totalPerGroup,
+                round(100 * totalPerGroup / @total, 1) as totalRatio
+            ')->get();
+
+        dd($data);
 
         return Inertia::render('Analysis');
     }
