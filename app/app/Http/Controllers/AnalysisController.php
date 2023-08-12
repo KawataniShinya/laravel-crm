@@ -207,7 +207,7 @@ class AnalysisController extends Controller
             $rank--;
         }
 
-        dd($total, $eachCount, $rCount, $fCount, $mCount);
+//        dd($total, $eachCount, $rCount, $fCount, $mCount);
 
         // 6. RとFで2次元で表示
         $data = DB::table($subQuery)
@@ -223,7 +223,7 @@ class AnalysisController extends Controller
             ->orderBy('rRank', 'desc')
             ->get();
 
-        dd($data);
+//        dd($data);
 
         return Inertia::render('Analysis');
     }
