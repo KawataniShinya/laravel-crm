@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Scopes\Subtotal;
+use Carbon\Carbon;
 
 /**
  * App\Models\Order
@@ -34,11 +35,13 @@ class Order extends Model
         }
 
         if (is_null($startDate) && !is_null($endDate)) {
-            return $query->where('created_at', "<=", $endDate);
+            $endDate1 = Carbon::parse($endDate)->addDay(1);
+            return $query->where('created_at', "<=", $endDate1);
         }
 
         if (!is_null($startDate) && !is_null($endDate)) {
-            return $query->where('created_at', ">=", $startDate)->where('created_at', "<=", $endDate);
+            $endDate1 = Carbon::parse($endDate)->addDay(1);
+            return $query->where('created_at', ">=", $startDate)->where('created_at', "<=", $endDate1);
         }
     }
 }
