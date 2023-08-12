@@ -26,11 +26,17 @@ const getData = async () => {
             params: {
                 startDate: form.startDate,
                 endDate: form.endDate,
-                type: form.type
+                type: form.type,
+                rfmPrms: form.rfmPrms
             }
         }).then( res => {
             data.data = res.data.data
-            data.labels = res.data.labels
+            if (res.data.labels) {
+                data.labels = res.data.labels
+            }
+            if (res.data.eachCount) {
+                data.eachCount = res.data.eachCount
+            }
             data.totals = res.data.totals
             data.type = res.data.type
             console.log(res.data)
@@ -106,7 +112,9 @@ const getData = async () => {
                         </form>
 
                         <div v-if="data.data">
-                            <Chart :data="data" />
+                            <div v-if="data.type !== 'rfm'">
+                                <Chart :data="data" />
+                            </div>
                             <ResultTable :data="data" />
                         </div>
                     </div>
