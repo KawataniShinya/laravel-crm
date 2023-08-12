@@ -67,7 +67,30 @@ class AnalysisController extends Controller
             array_push($bindValues, 1 + $tempValue);
         }
 
-        dd($count, $decile, $bindValues);
+//        dd($count, $decile, $bindValues);
+
+        DB::statement('set @row_num = 0;');
+        $subQuery = DB::table($subQuery)
+            ->selectRaw("
+                row_num,
+                customer_id,
+                customer_name,
+                total,
+                case
+                    when ? <= row_num and row_num < ? then 1
+                    when ? <= row_num and row_num < ? then 2
+                    when ? <= row_num and row_num < ? then 3
+                    when ? <= row_num and row_num < ? then 4
+                    when ? <= row_num and row_num < ? then 5
+                    when ? <= row_num and row_num < ? then 6
+                    when ? <= row_num and row_num < ? then 7
+                    when ? <= row_num and row_num < ? then 8
+                    when ? <= row_num and row_num < ? then 9
+                    when ? <= row_num and row_num < ? then 10
+                end as decile
+            ", $bindValues)->get();
+
+        dd($subQuery);
 
         return Inertia::render('Analysis');
     }
