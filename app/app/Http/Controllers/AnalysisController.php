@@ -12,7 +12,7 @@ class AnalysisController extends Controller
 {
     public function index()
     {
-        $startDate = '2023-07-01';
+        $startDate = '2022-07-01';
         $endDate = '2023-07-31';
 
 //        $period = Order::betweenDate($startDate, $endDate)
@@ -112,6 +112,33 @@ class AnalysisController extends Controller
 //            ')->get();
 
 //        dd($data);
+
+
+
+
+        // 1. 購買id毎にまとめる
+        $subQuery = Order::betweenDate($startDate, $endDate)
+            ->groupBy('id')
+            ->selectRaw('
+                id,
+                customer_id,
+                customer_name,
+                SUM(subtotal) as totalPerPurchase, created_at
+            ');
+
+        // 2. 会員毎にまとめて最終購入日、回数う、合計金額を取得。
+        $subQuery = DB::table($subQuery)
+            ->groupBy('customer_id')
+            ->selectRaw('
+                customer_id,
+                customer_name,
+                MAX(created_at) as recentDate,
+                datediff(now(), MAX(created_at)) as recency,
+                count(customer_id) as frequency,
+                SUM(totalPerPurchase) as monetary
+            ')->get();
+
+        dd($subQuery);
 
         return Inertia::render('Analysis');
     }
