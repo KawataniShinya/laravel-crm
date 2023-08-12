@@ -12,7 +12,7 @@ class AnalysisController extends Controller
 {
     public function index()
     {
-        $startDate = '2022-07-01';
+        $startDate = '2021-07-01';
         $endDate = '2023-07-31';
 
 //        $period = Order::betweenDate($startDate, $endDate)
@@ -141,6 +141,8 @@ class AnalysisController extends Controller
 //        dd($subQuery);
 
         // 4. 会員毎のRFMランクを計算
+        $rfmPrms = [14, 28, 60, 90, 7, 5, 3, 2, 300000, 200000, 100000, 30000];
+
         $subQuery = DB::table($subQuery)
             ->selectRaw('
                 customer_id,
@@ -149,24 +151,24 @@ class AnalysisController extends Controller
                 frequency,
                 monetary,
                 case
-                    when recency < 14 then 5
-                    when recency < 28 then 4
-                    when recency < 60 then 3
-                    when recency < 90 then 2
+                    when recency < ? then 5
+                    when recency < ? then 4
+                    when recency < ? then 3
+                    when recency < ? then 2
                     else 1 end as r,
                 case
-                    when 7 <= frequency then 5
-                    when 5 <= frequency then 4
-                    when 3 <= frequency then 3
-                    when 2 <= frequency then 2
+                    when ? <= frequency then 5
+                    when ? <= frequency then 4
+                    when ? <= frequency then 3
+                    when ? <= frequency then 2
                     else 1 end as f,
                 case
-                    when 300000 <= monetary then 5
-                    when 200000 <= monetary then 4
-                    when 100000 <= monetary then 3
-                    when 30000 <= monetary then 2
+                    when ? <= monetary then 5
+                    when ? <= monetary then 4
+                    when ? <= monetary then 3
+                    when ? <= monetary then 2
                     else 1 end as m
-            ');
+            ', $rfmPrms);
 
 //        dd($subQuery);
 
@@ -177,21 +179,35 @@ class AnalysisController extends Controller
             ->groupBy('r')
             ->selectRaw('r, count(r)')
             ->orderBy('r', 'desc')
-            ->get();
+            ->pluck('count(r)');
 
         $fCount = DB::table($subQuery)
             ->groupBy('f')
             ->selectRaw('f, count(f)')
             ->orderBy('f', 'desc')
-            ->get();
+            ->pluck('count(f)');
 
         $mCount = DB::table($subQuery)
             ->groupBy('m')
             ->selectRaw('m, count(m)')
             ->orderBy('m', 'desc')
-            ->get();
+            ->pluck('count(m)');
 
-//        dd($total, $rCount, $fCount, $mCount);
+
+        $eachCount = [];
+        $rank = 5;
+
+        for ($i=0; $i<5; $i++) {
+            array_push($eachCount, [
+                'rank' => $rank,
+                'r' => $rCount[$i],
+                'f' => $fCount[$i],
+                'm' => $mCount[$i]
+            ]);
+            $rank--;
+        }
+
+        dd($total, $eachCount, $rCount, $fCount, $mCount);
 
         // 6. RとFで2次元で表示
         $data = DB::table($subQuery)
