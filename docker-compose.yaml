@@ -11,7 +11,9 @@ services:
       sample-network:
 
   app-npm-run-dev:
-    image: node:19.9.0
+    build:
+      context: ./docker/node
+      dockerfile: Dockerfile
     container_name: app-npm-run-dev
     volumes:
       - ./app:/var/www/app
@@ -21,8 +23,8 @@ services:
       VIRTUAL_HOST: localhost.app-node.sample.jp
     working_dir: /var/www/app
     command:
-      bash -c "npm cache clean --force && rm -rf node_modules public/hot &&npm install && npm run build && npm run docker"
-#      bash -c "npm cache clean --force && rm -rf node_modules public/hot && npm install && npm run build"
+      # build:build only(for product), docker:npm run dev on docker
+      docker
     networks:
       sample-network:
         aliases:

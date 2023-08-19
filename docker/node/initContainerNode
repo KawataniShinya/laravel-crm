@@ -1,0 +1,36 @@
+#!/bin/bash
+
+common()
+{
+  npm cache clean --force
+  rm -rf node_modules public/hot
+  npm install
+}
+
+build()
+{
+  npm run build
+}
+
+runDocker()
+{
+  npm run docker
+}
+
+# main process
+if [[ $# -gt 0 ]]; then
+    case "$1" in
+        build )
+          common
+          build
+          ;;
+        docker )
+          common
+          build
+          runDocker
+          ;;
+        *)
+          exec "$@"
+          ;;
+    esac
+fi
