@@ -7,14 +7,16 @@ common()
   npm install
 }
 
-build()
-{
+build() {
   npm run build
 }
 
-runDocker()
-{
+runDocker() {
   npm run docker
+}
+
+bash() {
+  exec bash
 }
 
 # main process
@@ -23,13 +25,17 @@ if [[ $# -gt 0 ]]; then
         build )
           common
           build
+          bash
           ;;
         docker )
           common
           build
           runDocker
           ;;
-        *)
+        bash )
+          bash
+          ;;
+        * )
           exec "$@"
           ;;
     esac

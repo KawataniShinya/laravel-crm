@@ -21,9 +21,11 @@ services:
       - "80"
     environment:
       VIRTUAL_HOST: localhost.app-node.sample.jp
+    tty: true
+    stdin_open: true
     working_dir: /var/www/app
     command:
-      # build:build only(for product), docker:npm run dev on docker
+      # build:build only(for product), docker:npm run dev on docker, bash:only start container
       docker
     networks:
       sample-network:
